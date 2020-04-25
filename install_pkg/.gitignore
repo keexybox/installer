@@ -1,0 +1,5 @@
+# This directory contains extra softwares tar.gz files for KeexyBox installation
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore

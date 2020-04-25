@@ -1,0 +1,3 @@
+# Excluding installation or update config files
+/install.conf
+/update.conf
