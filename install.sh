@@ -47,7 +47,7 @@ UPDATE_CONF="./update.conf"
 KEEXYBOX_HOME="/opt/keexybox"
 
 # Keexybox version beeing installed
-KEEXYBOX_NEW_VERSION=1.0.0
+KEEXYBOX_NEW_VERSION="20.04.2"
 
 # This function required to converts cidr to IP mask.
 # Example : it converts /24 to 255.255.255.0
@@ -151,7 +151,7 @@ create_install_config_file() {
 	
 	# Keexybox versions
 	conf_data+=("export KEEXYBOX_CURRENT_VERSION=${KEEXYBOX_CURRENT_VERSION}")
-	conf_data+=("export KEEXYBOX_NEW_VERSION=${KEEXYBOX_CURRENT_VERSION}")
+	conf_data+=("export KEEXYBOX_NEW_VERSION=${KEEXYBOX_NEW_VERSION}")
 	
 	# Package to install
 	conf_data+=("export INSTALL_PKG_REQUIRED=1")
@@ -230,7 +230,7 @@ create_update_config_file() {
 	
 	# Keexybox versions
 	conf_data+=("export KEEXYBOX_CURRENT_VERSION=${KEEXYBOX_CURRENT_VERSION}")
-	conf_data+=("export KEEXYBOX_NEW_VERSION=${KEEXYBOX_CURRENT_VERSION}")
+	conf_data+=("export KEEXYBOX_NEW_VERSION=${KEEXYBOX_NEW_VERSION}")
 	
 	# Package to install
 	conf_data+=("export INSTALL_PKG_REQUIRED=1")
@@ -379,7 +379,7 @@ if [ -f ${KEEXYBOX_VER_FILE} ]; then
 
 	./util/run_update.sh ${UPDATE_CONF}
 else
-	KEEXYBOX_CURRENT_VERSION=0
+	KEEXYBOX_CURRENT_VERSION=${KEEXYBOX_NEW_VERSION}
 	#-------- INITIALIZE CONFIGURATION VALUES
 	set_dns_config
 	

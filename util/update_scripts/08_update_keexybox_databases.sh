@@ -22,26 +22,26 @@
 # along with Keexybox.	If not, see <http://www.gnu.org/licenses/>.
 # ***** END LICENSE BLOCK *****
 #
-# This script run only if naming convention is respected for SQL files for update
-# The file naming convention is in 4 parts seperated by "_"
-#  - prefix name
-#  - number 4 digits: it is for the sorting of SQL. This number should be uniq and incremented by 1 for each new sql file
-#  - current version of Keexybox database
-#  - target version of Keexybox database
+# This script import all SQL files from current database version to new version
 #
-# For example :
-# keexybox_0001_1.0.0_1.0.1.sql
-# keexybox_0002_1.0.1_1.0.2.sql
-# keexybox_0003_1.0.2_11.5.1.sql
+# It works only if naming convention is respected for SQL files for update.
+# The convention is : 
+#    <database_name>_db_from_<current_version>_to_<new_version>.sql
 #
-# This script will import as many SQL files to update database from current Keexybox version 
+# "database_name" is the database name
+# "current_version" is the current database version
+# "new_version" is the target version database version
+#
 
-#mysql_cmd="mysql -u ${MARIADB_ROOT_LOGIN}"
+# Uncomment for testing
+#KEEXYBOX_CURRENT_VERSION="20.04.6"
+#KEEXYBOX_NEW_VERSION="20.04.6"
 
-#KEEXYBOX_CURRENT_VERSION=1.0.0
-#KEEXYBOX_NEW_VERSION=11.5.1
+KEEXYBOX_HOME="/opt/keexybox"
+KEEXYBOX_HOME="/root/keexybox_gitlist"
+SQL_UPDATES_PATH="${KEEXYBOX_HOME}/keexyapp/config/schema/updates/"
 
-SQL_UPDATES_PATH="/root/keexybox_install/util/sql/sql_update/"
+#"keexybox_db_from_20.04.1_to_20.04.2.sql"
 
 update_database() {
 	database=$1
@@ -49,20 +49,17 @@ update_database() {
 	password=$3
 	file_prefix=$4
 
-	if [ ${KEEXYBOX_CURRENT_VERSION} != ${KEEXYBOX_NEW_VERSION} ]; then
-		sql_file_num=$(find -name "${database}_*_${KEEXYBOX_CURRENT_VERSION}_*.sql" | sed "s/.\///g"  | head -n 1 | cut -d"_" -f2)
-		sql_last_file_num=$(find -name "${database}_*_*_${KEEXYBOX_NEW_VERSION}.sql" | sed "s/.\///g"  | head -n 1 | cut -d"_" -f2)
-	
-		sql_file_to_update=$(find ${SQL_UPDATES_PATH} -name "${database}_${sql_file_num}*" | head -n 1)
+	if [ ${KEEXYBOX_CURRENT_VERSION} != ${KEEXYBOX_NEW_VERSION} -a ${KEEXYBOX_CURRENT_VERSION} != "" -a ${KEEXYBOX_NEW_VERSION} != "" ]; then
+        sql_files_list=$(ls -1v ${database}_db_from_*_to_*.sql 2> /dev/null | grep -A 999999999 from_${KEEXYBOX_CURRENT_VERSION} | grep -B 999999999 to_${KEEXYBOX_NEW_VERSION})
 
-		while [ "${sql_file_to_update}" != "" ]; do
-			echo "updating: ${sql_file_to_update}"
-			if [ "${sql_file_to_update}" != "" ]; then
-				echo "mysql -u${user} -p${password} ${database} < ${sql_file_to_update}"
+        for sql_file in ${sql_files_list}; do
+            echo "updating: ${sql_file}"
+		    if [ "${sql_file}" != "" ]; then
+		    	mysql -u${user} -p${password} ${database} < ${sql_file}
 			fi
-			sql_file_num=$(printf %04d $(expr $sql_file_num + 1))
-			sql_file_to_update=$(find ${SQL_UPDATES_PATH} -name "${database}_${sql_file_num}*" | head -n 1)
-		done
+        done
+    else
+        echo "Nothing to update for database ${database}!"
 	fi
 }
 
@@ -71,5 +68,5 @@ echo "---- Update of Keexybox databases  ----"
 echo
 cd $SQL_UPDATES_PATH
 update_database ${DATABASE_KEEXYBOX_DATABASE} ${DATABASE_KEEXYBOX_USER} ${DATABASE_KEEXYBOX_PASSWORD} keexybox
-update_database ${DATABASE_KEEXYBOX_BLACKLIST_DATABASE} ${DATABASE_KEEXYBOX_BLACKLIST_USER} ${DATABASE_KEEXYBOX_BLACKLIST_PASSWORD} keexyboxblacklist
-update_database ${DATABASE_KEEXYBOX_LOGS_DATABASE} ${DATABASE_KEEXYBOX_LOGS_USER} ${DATABASE_KEEXYBOX_LOGS_PASSWORD} keexyboxlogs
+update_database ${DATABASE_KEEXYBOX_BLACKLIST_DATABASE} ${DATABASE_KEEXYBOX_BLACKLIST_USER} ${DATABASE_KEEXYBOX_BLACKLIST_PASSWORD} keexybox_blacklist
+update_database ${DATABASE_KEEXYBOX_LOGS_DATABASE} ${DATABASE_KEEXYBOX_LOGS_USER} ${DATABASE_KEEXYBOX_LOGS_PASSWORD} keexybox_logs

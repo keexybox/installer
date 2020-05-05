@@ -46,7 +46,7 @@ You will have to compile extra softwares like [ISC Bind](https://www.isc.org/bin
 KeexyBox is an open source project by [KeexyBox.org](https://keexybox.org) that is licensed under [GPLv3](https://www.gnu.org/licenses).
 
 ## Change log
-**For the most recent change log, visit the [releases page](https://github.com/bsaglietto/KeexyBox/releases) or the [changelog file](https://github.com/bsaglietto/KeexyBox/blob/master/changelog.md).** We will add detailed release notes to each new release. 
+**For the most recent change log, visit the [releases page](https://github.com/keexybox/installer/releases) or the [changelog file](https://github.com/keexybox/installer/changelog.md).** We will add detailed release notes to each new release. 
 
 ## Donations
 Donations are **greatly appreciated!**
