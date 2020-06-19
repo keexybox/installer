@@ -83,6 +83,11 @@ echo "  ${KXB_CMD} config dhcp all"
 ${KXB_CMD} config dhcp all >> /dev/null
 touch ${KEEXYBOX_HOME}/dhcpd/etc/dhcpd.leases >> /dev/null
 
+# Create hostapd configuration : main
+echo "Hostapd:"
+echo "  ${KXB_CMD} config hostapd all"
+${KXB_CMD} config hostapd all >> /dev/null
+
 # Create Startup keexybox Script
 echo "Startup keexybox scripts:"
 cd /etc/init.d/

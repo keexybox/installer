@@ -24,7 +24,7 @@
 echo
 echo "---- Installation of Keexybox packages ----"
 echo
-for app in bind dhcpd tor keexyapp; do
+for app in bind dhcpd tor hostapd keexyapp; do
 	#-------- CREATE APP DIRECTORY
 	if [ -d "${KEEXYBOX_HOME}/${app}" ]; then
 		if [ ! -z "$(ls "${KEEXYBOX_HOME}/${app}")" ]

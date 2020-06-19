@@ -6,24 +6,24 @@
 # @copyright Copyright (c) 2020, Benoit SAGLIETTO
 # @license GPLv3
 #
-# This file is part of Keexybox project.
+# This file is part of KeexyBox project.
 
-# Keexybox is free software: you can redistribute it and/or modify
+# KeexyBox is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Keexybox is distributed in the hope that it will be useful,
+# KeexyBox is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Keexybox.	If not, see <http://www.gnu.org/licenses/>.
+# along with KeexyBox.	If not, see <http://www.gnu.org/licenses/>.
 # ***** END LICENSE BLOCK *****
 #
 # Title of installation
-BACKTITLE="Keexybox installation"
+BACKTITLE="KeexyBox installation"
 
 # IP address used to check routing settings
 TESTING_IP_FOR_ROUTING="8.8.8.8"
@@ -31,7 +31,7 @@ TESTING_IP_FOR_ROUTING="8.8.8.8"
 # Domain used to test internet connection
 TESTING_DOMAIN_FOR_INTERNET="www.google.com"
 
-# Keexybox version check script
+# KeexyBox version check script
 KEEXYBOX_VER_FILE="/opt/keexybox/keexyapp/src/keexybox_version"
 if [ ! -f ${KEEXYBOX_VER_FILE} ]; then
 	KEEXYBOX_VER_FILE="/opt/keexybox/keexyapp_old/src/keexybox_version"
@@ -43,11 +43,11 @@ INSTALL_CONF="./install.conf"
 # Name of config file to create for update
 UPDATE_CONF="./update.conf"
 	
-# Default Keexybox home dir
+# Default KeexyBox home dir
 KEEXYBOX_HOME="/opt/keexybox"
 
-# Keexybox version beeing installed
-KEEXYBOX_NEW_VERSION="20.04.2"
+# KeexyBox version beeing installed
+KEEXYBOX_NEW_VERSION="20.08.1"
 
 # This function required to converts cidr to IP mask.
 # Example : it converts /24 to 255.255.255.0
@@ -141,15 +141,15 @@ cli_ask_admin_password() {
 ####### END PASSWORD SET ######
 ########################################
 
-# This function create a new config file that be use to install Keexybox
+# This function create a new config file that be use to install KeexyBox
 create_install_config_file() {
 	# Name of config file to create
 	#INSTALL_CONF="./install.conf"
 	
-	# Default Keexybox home dir
+	# Default KeexyBox home dir
 	#KEEXYBOX_HOME="/opt/keexybox"
 	
-	# Keexybox versions
+	# KeexyBox versions
 	conf_data+=("export KEEXYBOX_CURRENT_VERSION=${KEEXYBOX_CURRENT_VERSION}")
 	conf_data+=("export KEEXYBOX_NEW_VERSION=${KEEXYBOX_NEW_VERSION}")
 	
@@ -193,7 +193,7 @@ create_install_config_file() {
 	conf_data+=("export KXB_CMD=\"${KEEXYBOX_HOME}/keexyapp/bin/cake\"")
 	conf_data+=("export KXB_SCRIPTS=\"${KEEXYBOX_HOME}/keexyapp/src/Shell/scripts/\"")
 
-	# Keexybox admin password
+	# KeexyBox admin password
 	conf_data+=("export KEEXYBOX_ADMIN_PASSWORD='${KEEXYBOX_ADMIN_PASSWORD}'")
 
 	# Output Network settings
@@ -220,15 +220,15 @@ create_install_config_file() {
 	unset IFS
 }
 
-# This function create a new config file that be use to update Keexybox
+# This function create a new config file that be use to update KeexyBox
 create_update_config_file() {
 	# Name of config file to create
 	#INSTALL_CONF="./install.conf"
 	
-	# Default Keexybox home dir
+	# Default KeexyBox home dir
 	#KEEXYBOX_HOME="/opt/keexybox"
 	
-	# Keexybox versions
+	# KeexyBox versions
 	conf_data+=("export KEEXYBOX_CURRENT_VERSION=${KEEXYBOX_CURRENT_VERSION}")
 	conf_data+=("export KEEXYBOX_NEW_VERSION=${KEEXYBOX_NEW_VERSION}")
 	
@@ -266,7 +266,7 @@ create_update_config_file() {
 	conf_data+=("export KXB_CMD=\"${KEEXYBOX_HOME}/keexyapp/bin/cake\"")
 	conf_data+=("export KXB_SCRIPTS=\"${KEEXYBOX_HOME}/keexyapp/src/Shell/scripts/\"")
 
-	# Keexybox admin password
+	# KeexyBox admin password
 	#conf_data+=("export KEEXYBOX_ADMIN_PASSWORD='${KEEXYBOX_ADMIN_PASSWORD}'")
 
 	# Output Network settings
@@ -301,7 +301,7 @@ if [ $(id -u) -ne 0 ]; then
 fi
 
 
-echo "Please wait, checks are in progress before starting Keexybox installation... "
+echo "Please wait, checks are in progress before starting KeexyBox installation... "
 ping -W 2 -c 4 ${TESTING_IP_FOR_ROUTING} > /dev/null 2>&1
 ping_ok=$?
 
@@ -328,7 +328,7 @@ fi
 install_script_dir=$(echo "$0" | awk -F"/" '{OFS="/"; $NF=""}1')
 cd $install_script_dir
 
-# Check existing Keexybox installation
+# Check existing KeexyBox installation
 if [ -f ${KEEXYBOX_VER_FILE} ]; then
 	KEEXYBOX_CURRENT_VERSION=$(head -n 1 ${KEEXYBOX_VER_FILE})
 
@@ -337,7 +337,7 @@ if [ -f ${KEEXYBOX_VER_FILE} ]; then
 	elif [ -f ${KEEXYBOX_HOME}/keexyapp_old/bin/cake ]; then
 		cake_cmd=${KEEXYBOX_HOME}/keexyapp_old/bin/cake
 	else
-		echo "Unable to locate the command which get information of current Keexybox installation. Installation aborted!"
+		echo "Unable to locate the command which get information of current KeexyBox installation. Installation aborted!"
 		exit 1
 	fi	
 
@@ -371,7 +371,7 @@ if [ -f ${KEEXYBOX_VER_FILE} ]; then
 
 	if [ "$db_rc" -ne 0 ]; then
 		echo
-		echo "It looks like you have an existing installation of Keexybox, but we can not get all the information for the update."
+		echo "It looks like you have an existing installation of KeexyBox, but we can not get all the information for the update."
 		exit 1
 	fi
 	

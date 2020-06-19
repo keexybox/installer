@@ -24,7 +24,7 @@
 echo
 echo "---- Removing installed Keexybox packages ----"
 echo
-for app in bind dhcpd tor; do
+for app in bind dhcpd tor hostapd; do
 	echo -n "Removing ${app}... "
 	rm -rf ${KEEXYBOX_HOME}/${app}
 	echo "done"
