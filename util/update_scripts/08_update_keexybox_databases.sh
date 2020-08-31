@@ -38,10 +38,7 @@
 #KEEXYBOX_NEW_VERSION="20.04.6"
 
 KEEXYBOX_HOME="/opt/keexybox"
-KEEXYBOX_HOME="/root/keexybox_gitlist"
 SQL_UPDATES_PATH="${KEEXYBOX_HOME}/keexyapp/config/schema/updates/"
-
-#"keexybox_db_from_20.04.1_to_20.04.2.sql"
 
 update_database() {
 	database=$1
