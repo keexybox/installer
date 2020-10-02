@@ -22,6 +22,11 @@
 # along with Keexybox.	If not, see <http://www.gnu.org/licenses/>.
 # ***** END LICENSE BLOCK *****
 echo
+echo "---- Unblock Wi-Fi ----"
+echo
+rfkill unblock wifi
+
+echo
 echo "---- Starting Keexybox ----"
 echo
 /etc/init.d/mysql start
