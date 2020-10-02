@@ -24,7 +24,7 @@
 echo
 echo "---- Unblock Wi-Fi ----"
 echo
-rfkill unblock wifi
+rfkill unblock all
 
 echo
 echo "---- Starting Keexybox ----"
