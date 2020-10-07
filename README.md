@@ -7,7 +7,7 @@ KeexyBox Project Installation scripts
 ## Presentation
 **Installation scripts of KeexyBox.**
 
-**KeexyBox** allows you to do **parental control**, **block ads**, limit telemetry, and **browse the Internet anonymously** from your home network without installing any software on your devices. It is a software program which requires a [Raspberry PI](https://www.raspberrypi.org/) box and which is installed on [Raspbian](https://www.raspberrypi.org/downloads/raspbian/). It constitutes a cut-off point between your devices (computers, tablets, smartphones, etc.) and your router or Internet box. KeexyBox acts as a default gateway and DNS server for the devices in your home network.
+**KeexyBox** allows you to do **parental control**, **block ads**, limit telemetry, and **browse the Internet anonymously** from your home network without installing any software on your devices. It also can be used to create a public **wireless access point** with the **captive portal**. It is a software program which requires a [Raspberry PI](https://www.raspberrypi.org/) box and which is installed on [Raspbian](https://www.raspberrypi.org/downloads/raspbian/). It constitutes a cut-off point between your devices (computers, tablets, smartphones, etc.) and your router or Internet box. KeexyBox acts as a default gateway and DNS server for the devices in your home network.
 
 It thus intercepts all connections to the Internet to carry out website filtering or to activate browsing via the Tor anonymity network according to connection profiles which you have configured.
 
