@@ -11,7 +11,7 @@ KeexyBox Project Installation scripts
 
 It thus intercepts all connections to the Internet to carry out website filtering or to activate browsing via the Tor anonymity network according to connection profiles which you have configured.
 
-!["KeexyBox diagram"](https://keexybox.org/wp-content/uploads/2019/12/keexybox-diagram-1.jpg "KeexyBox diagram")
+!["KeexyBox diagram"](https://keexybox.org/wp-content/uploads/2020/10/keexybox_net_topology_as_gateway_v2.png "KeexyBox diagram")
 
 It does not require any installation on your devices because the filtering is carried out by the DNSs, thus allowing HTTPS sites to be filtered while at the same time protecting the KeexyBox users’ privacy.
 
