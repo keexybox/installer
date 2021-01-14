@@ -266,24 +266,6 @@ create_update_config_file() {
 	conf_data+=("export KXB_CMD=\"${KEEXYBOX_HOME}/keexyapp/bin/cake\"")
 	conf_data+=("export KXB_SCRIPTS=\"${KEEXYBOX_HOME}/keexyapp/src/Shell/scripts/\"")
 
-	# KeexyBox admin password
-	#conf_data+=("export KEEXYBOX_ADMIN_PASSWORD='${KEEXYBOX_ADMIN_PASSWORD}'")
-
-	# Output Network settings
-	#conf_data+=("export KEEXYBOX_NET_OUTPUT_IP=$KEEXYBOX_NET_OUTPUT_IP")
-	#conf_data+=("export KEEXYBOX_NET_OUTPUT_MASK=$KEEXYBOX_NET_OUTPUT_MASK")
-	#conf_data+=("export KEEXYBOX_NET_OUTPUT_INTERFACE=$KEEXYBOX_NET_OUTPUT_INTERFACE")
-	#conf_data+=("export KEEXYBOX_NET_GW_IP=${KEEXYBOX_NET_GW_IP}")
-
-	# Input Network settings
-	#conf_data+=("export KEEXYBOX_NET_INPUT_IP=169.254.1.1")
-	#conf_data+=("export KEEXYBOX_NET_INPUT_MASK=255.255.255.0")
-	#conf_data+=("export KEEXYBOX_NET_INPUT_INTERFACE=${KEEXYBOX_NET_OUTPUT_INTERFACE}:0")
-
-	# DNS servers
-	#conf_data+=("export KEEXYBOX_DNS1=${dns[1]}")
-	#conf_data+=("export KEEXYBOX_DNS2=${dns[2]}")
-
 	IFS=""
 	echo "#!/bin/bash" > ${UPDATE_CONF}
 	for conf in ${conf_data[@]}; do
@@ -293,35 +275,44 @@ create_update_config_file() {
 	unset IFS
 }
 
-
-# Check if this script run as root
-if [ $(id -u) -ne 0 ]; then
-	echo "This install script must be run as root!"
+#-------- CHECK IF THIS SCRIPT IS RUNNING AS ROOT OR AS KEEXYBOX USER
+# Installation must be done as root
+# Update can be done as root or as keexybox user. As keexybox, required packages will not be updated 
+user_inst=''
+if [ $(id -u) -eq 0 ]; then
+    user_inst='root'
+elif [ $USER == 'keexybox' ]; then
+    user_inst='keexybox'
+    echo "ok keexybox"
+else
+	echo "This install script must be run as root or as keexybox!"
 	exit 1
 fi
 
+#------- IF USER IS ROOT CHECK NETWORK CONFIGURATION
+if [ $user_inst == 'root' ]; then
+    echo "Please wait, checks are in progress before starting KeexyBox installation... "
+    ping -W 2 -c 4 ${TESTING_IP_FOR_ROUTING} > /dev/null 2>&1
+    ping_ok=$?
 
-echo "Please wait, checks are in progress before starting KeexyBox installation... "
-ping -W 2 -c 4 ${TESTING_IP_FOR_ROUTING} > /dev/null 2>&1
-ping_ok=$?
+    if [ "${ping_ok}" -ne 0 ]; then
+	    echo "No internet connection detected. Installation aborted!"
+	    exit 1
+    fi
 
-if [ "${ping_ok}" -ne 0 ]; then
-	echo "No internet connection detected. Installation aborted!"
-	exit 1
-fi
+    # Getting current IP setting for Internet connection
+    KEEXYBOX_NET_GW_IP=$(ip route get ${TESTING_IP_FOR_ROUTING} | grep ${TESTING_IP_FOR_ROUTING} | cut -d" " -f3)
+    #KEEXYBOX_NET_GW_INT=$(ip route get ${TESTING_IP_FOR_ROUTING} | grep ${TESTING_IP_FOR_ROUTING} | cut -d" " -f5)
+    KEEXYBOX_NET_OUTPUT_INTERFACE=$(ip route get ${TESTING_IP_FOR_ROUTING} | grep ${TESTING_IP_FOR_ROUTING} | cut -d" " -f5)
+    KEEXYBOX_NET_OUTPUT_IP=$(ip route get ${TESTING_IP_FOR_ROUTING} | grep ${TESTING_IP_FOR_ROUTING} | cut -d" " -f7)
+    KEEXYBOX_NET_OUTPUT_CIDR=$(ip addr | grep ${KEEXYBOX_NET_OUTPUT_IP} | cut -d" " -f6 | cut -d"/" -f2)
+    KEEXYBOX_NET_OUTPUT_MASK=$(cidr2mask ${KEEXYBOX_NET_OUTPUT_CIDR})
 
-# Getting current IP setting for Internet connection
-KEEXYBOX_NET_GW_IP=$(ip route get ${TESTING_IP_FOR_ROUTING} | grep ${TESTING_IP_FOR_ROUTING} | cut -d" " -f3)
-#KEEXYBOX_NET_GW_INT=$(ip route get ${TESTING_IP_FOR_ROUTING} | grep ${TESTING_IP_FOR_ROUTING} | cut -d" " -f5)
-KEEXYBOX_NET_OUTPUT_INTERFACE=$(ip route get ${TESTING_IP_FOR_ROUTING} | grep ${TESTING_IP_FOR_ROUTING} | cut -d" " -f5)
-KEEXYBOX_NET_OUTPUT_IP=$(ip route get ${TESTING_IP_FOR_ROUTING} | grep ${TESTING_IP_FOR_ROUTING} | cut -d" " -f7)
-KEEXYBOX_NET_OUTPUT_CIDR=$(ip addr | grep ${KEEXYBOX_NET_OUTPUT_IP} | cut -d" " -f6 | cut -d"/" -f2)
-KEEXYBOX_NET_OUTPUT_MASK=$(cidr2mask ${KEEXYBOX_NET_OUTPUT_CIDR})
-
-# Check if host network is properly configured
-if [ "${KEEXYBOX_NET_GW_IP}" = "" -o "${KEEXYBOX_NET_OUTPUT_INTERFACE}" = "" -o "${KEEXYBOX_NET_OUTPUT_IP}" = "" -o "${KEEXYBOX_NET_OUTPUT_MASK}" = "" ]; then
-	echo "Unable to detect the current network settings for Internet access. Installation aborted!"
-	exit 1
+    # Check if host network is properly configured
+    if [ "${KEEXYBOX_NET_GW_IP}" = "" -o "${KEEXYBOX_NET_OUTPUT_INTERFACE}" = "" -o "${KEEXYBOX_NET_OUTPUT_IP}" = "" -o "${KEEXYBOX_NET_OUTPUT_MASK}" = "" ]; then
+	    echo "Unable to detect the current network settings for Internet access. Installation aborted!"
+	    exit 1
+    fi
 fi
 
 # Change directory to install directory 

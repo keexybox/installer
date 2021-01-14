@@ -82,20 +82,21 @@ if [ $conn_mdb -eq 0 ]; then
 		fi
 	done
 
-	echo ""
-	echo "Checking ports:"
-	for tcpip_port in $tcpip_ports 80 443 53; do
-		ss -H -ltun | awk -F' ' '{print $5}' | grep :${tcpip_port}$ > /dev/null 2>&1 
-		res=$?
-		if [ $res == 1 ]; then
-			echo Port $tcpip_port : $(echo_green "OK")
-		else
-			echo Port $tcpip_port : $(echo_red "USED")
-			tcpip_ports_nok=$(expr $kxb_tcpip_ports_nok + 1)
-		fi
-	done
+	#echo ""
+	#echo "Checking ports:"
+	#for tcpip_port in $tcpip_ports 80 443 53; do
+	#	ss -H -ltun | awk -F' ' '{print $5}' | grep :${tcpip_port}$ > /dev/null 2>&1 
+	#	res=$?
+	#	if [ $res == 1 ]; then
+	#		echo Port $tcpip_port : $(echo_green "OK")
+	#	else
+	#		echo Port $tcpip_port : $(echo_red "USED")
+	#		tcpip_ports_nok=$(expr $kxb_tcpip_ports_nok + 1)
+	#	fi
+	#done
 
-	if [ $(expr $exec_file_nok + $config_files_nok + $dir_paths_nok + $tcpip_ports_nok) -gt 0 ]; then
+	#if [ $(expr $exec_file_nok + $config_files_nok + $dir_paths_nok + $tcpip_ports_nok) -gt 0 ]; then
+	if [ $(expr $exec_file_nok + $config_files_nok + $dir_paths_nok) -gt 0 ]; then
 		echo "-------------------------------------------------"
 		echo "Some Keexybox component should not work properly."
 		echo "Please run installation again."

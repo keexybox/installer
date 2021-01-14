@@ -24,19 +24,31 @@
 echo
 echo "---- Installation of Keexybox packages ----"
 echo
+rc=0
 for app in bind dhcpd tor hostapd keexyapp; do
 	#-------- CREATE APP DIRECTORY
-	if [ -d "${KEEXYBOX_HOME}/${app}" ]; then
-		if [ ! -z "$(ls "${KEEXYBOX_HOME}/${app}")" ]
-		then
-			echo "Installation of ${app} aborded. \"${KEEXYBOX_HOME}/${app}\" is not empty !"
-			exit 1
-		fi
-	else
+	if [ ! -d "${KEEXYBOX_HOME}/${app}" ]; then
 		mkdir "${KEEXYBOX_HOME}/${app}"
 	fi
-	#-------- DEPLOY APP
-	echo -n "Installing ${app} for Keexybox... "
-	tar xzf ${KEEXYBOX_PKG_DIR_PATH}/keexybox-${app}.tar.gz -C ${KEEXYBOX_HOME}/
-	echo "done"
+
+    if [ -f ${KEEXYBOX_PKG_DIR_PATH}/keexybox-${app}.tar.gz ]; then
+	    #-------- DEPLOY APP
+	    echo -n "Installing ${app} for Keexybox... "
+	    tar xzf ${KEEXYBOX_PKG_DIR_PATH}/keexybox-${app}.tar.gz -C ${KEEXYBOX_HOME}/
+        if [ $? -ne 0 ]; then
+	        echo "Error while installing ${app}"
+            rc=$(expr $rc + 1)
+        else
+	        echo "done"
+        fi
+    else
+        echo "No package available to install ${app}"
+    fi
 done
+
+if [ $rc -eq 0 ]; then
+    exit 0
+else
+    exit 1
+fi
+

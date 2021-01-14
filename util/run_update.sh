@@ -3,7 +3,7 @@
 # ***** BEGIN LICENSE BLOCK *****
 # @author Benoit Saglietto <bsaglietto[AT]keexybox.org>
 #
-# @copyright Copyright (c) 2018, Benoit SAGLIETTO
+# @copyright Copyright (c) 2021, Benoit SAGLIETTO
 # @license GPLv3
 #
 # This file is part of Keexybox project.
@@ -23,9 +23,15 @@
 # ***** END LICENSE BLOCK *****
 #
 
-#-------- CHECK IF THIS SCRIPT IS RUNNING AS ROOT
-if [ $(id -u) -ne 0 ]; then
-	echo "This install script must be run as root!"
+#-------- CHECK IF THIS SCRIPT IS RUNNING AS ROOT OR AS KEEXYBOX USER
+user_inst=''
+if [ $(id -u) -eq 0 ]; then
+    user_inst='root'
+elif [ $USER == 'keexybox' ]; then
+    user_inst='keexybox'
+    echo "ok keexybox"
+else
+	echo "This install script must be run as root or keexybox!"
 	exit 1
 fi
 
@@ -50,26 +56,35 @@ cd $install_script_dir
 
 MODULES_DIR_PATH="./update_scripts"
 
-${MODULES_DIR_PATH}/01_confirm_update.sh
+#-------- IF ROOT CONFIRM THE INSTALLATION
+if [ $user_inst == 'root' ]; then
+    ${MODULES_DIR_PATH}/01_confirm_update.sh
 
-confirm_install=$?
+    confirm_install=$?
 
-if [ ${confirm_install} -ne 0 ]; then
-	echo
-	echo "Update aborted!"
-	echo
-	exit 0
+    if [ ${confirm_install} -ne 0 ]; then
+	    echo
+	    echo "Update aborted!"
+	    echo
+	    exit 0
+    fi
 fi
 
-${MODULES_DIR_PATH}/02_stop_keexybox.sh
+if [ $user_inst == 'root' ]; then
+    ${MODULES_DIR_PATH}/02_stop_keexybox.sh
+fi
 
 #-------- SCRIPT TO INSTALL PACKAGES
 # Set location of tar.gz sources
 export KEEXYBOX_PKG_DIR_PATH="../install_pkg/"
 
-# Install packages and Python modules
-${MODULES_DIR_PATH}/03_install_required_pkg.sh
+#-------- IF ROOT UPDATE/INSTALL REQUIRED PACKAGES 
+if [ $user_inst == 'root' ]; then
+    # Install packages and Python modules
+    ${MODULES_DIR_PATH}/03_install_required_pkg.sh
+fi
 
+#-------- CHECK INSTALLED REQUIRED PACKAGES
 # Check packages and Python modules installation
 ${MODULES_DIR_PATH}/04_check_required_pkg_installed.sh
 if [ $? -ne 0 ]; then
@@ -77,7 +92,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #---- removing app
-${MODULES_DIR_PATH}/05_remove_tar_app.sh
+#${MODULES_DIR_PATH}/05_remove_tar_app.sh
 
 # Install provided Keexybox packages
 ${MODULES_DIR_PATH}/06_deploy_tar_app.sh
