@@ -42,13 +42,16 @@ mkdir -p ${KEEXYBOX_HOME}/keexyapp/logs
 #mkdir -p ${KEEXYBOX_HOME}/ssl
 #${KXB_CMD} config certificate generate
 
-echo "Logrotate:"
-echo "  ${KXB_CMD} config logrotate all"
-${KXB_CMD} config logrotate all >> /dev/null
+# Only update logrotate and sudoers if update is running as root
+if [ $(id -u) -eq 0 ]; then
+    echo "Logrotate:"
+    echo "  ${KXB_CMD} config logrotate all"
+    ${KXB_CMD} config logrotate all >> /dev/null
 
-echo "Sudoers:"
-echo "  ${KXB_CMD} config sudoers all"
-${KXB_CMD} config sudoers all >> /dev/null
+    echo "Sudoers:"
+    echo "  ${KXB_CMD} config sudoers all"
+    ${KXB_CMD} config sudoers all >> /dev/null
+fi
 
 #echo "  --- Network ---"
 #echo "  ${KXB_CMD} config network all"

@@ -283,9 +283,8 @@ if [ $(id -u) -eq 0 ]; then
     user_inst='root'
 elif [ $USER == 'keexybox' ]; then
     user_inst='keexybox'
-    echo "ok keexybox"
 else
-	echo "This install script must be run as root or as keexybox!"
+	echo "This script must be run as root or as keexybox!"
 	exit 1
 fi
 
@@ -370,19 +369,24 @@ if [ -f ${KEEXYBOX_VER_FILE} ]; then
 
 	./util/run_update.sh ${UPDATE_CONF}
 else
-	KEEXYBOX_CURRENT_VERSION=${KEEXYBOX_NEW_VERSION}
-	#-------- INITIALIZE CONFIGURATION VALUES
-	set_dns_config
-	
-	if [ -f "/usr/bin/whiptail" ]; then
-		#whiptail_ask_packages_to_install
-		whiptail_ask_admin_password
-	else
-		#cli_ask_packages_to_install
-		cli_ask_admin_password
-	fi
-	create_install_config_file
-	
-	#-------- RUN INSTALLATION
-	./util/run_install.sh ${INSTALL_CONF}
+    if [ $user_inst == 'root' ]; then
+    	KEEXYBOX_CURRENT_VERSION=${KEEXYBOX_NEW_VERSION}
+    	#-------- INITIALIZE CONFIGURATION VALUES
+    	set_dns_config
+    	
+    	if [ -f "/usr/bin/whiptail" ]; then
+    		#whiptail_ask_packages_to_install
+    		whiptail_ask_admin_password
+    	else
+    		#cli_ask_packages_to_install
+    		cli_ask_admin_password
+    	fi
+    	create_install_config_file
+    	
+    	#-------- RUN INSTALLATION
+    	./util/run_install.sh ${INSTALL_CONF}
+    else
+	    echo "The installation must be done as root!"
+	    exit 1
+    fi
 fi

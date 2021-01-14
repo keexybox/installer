@@ -29,9 +29,8 @@ if [ $(id -u) -eq 0 ]; then
     user_inst='root'
 elif [ $USER == 'keexybox' ]; then
     user_inst='keexybox'
-    echo "ok keexybox"
 else
-	echo "This install script must be run as root or keexybox!"
+	echo "This install script must be run as root or as keexybox!"
 	exit 1
 fi
 
@@ -106,10 +105,14 @@ ${MODULES_DIR_PATH}/09_gen_keexybox_config.sh
 
 #-------- RUN SCRIPT TO FINISH INSTALLATION
 ${MODULES_DIR_PATH}/10_check_installation.sh
-if [ $? -eq 0 ]; then
-	${MODULES_DIR_PATH}/11_start_keexybox.sh
-	${MODULES_DIR_PATH}/12_remove_keexybox_backup.sh
-	${MODULES_DIR_PATH}/13_display_installation_result.sh
-else
+res=$?
+if [ $res -ne 0 ]; then
 	exit 1
+else
+    if [ $user_inst == 'root' ]; then
+	    ${MODULES_DIR_PATH}/11_start_keexybox.sh
+	    ${MODULES_DIR_PATH}/12_remove_keexybox_backup.sh
+	    ${MODULES_DIR_PATH}/13_display_installation_result.sh
+    fi
+	exit 0
 fi
