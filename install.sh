@@ -47,7 +47,7 @@ UPDATE_CONF="./update.conf"
 KEEXYBOX_HOME="/opt/keexybox"
 
 # KeexyBox version beeing installed
-KEEXYBOX_NEW_VERSION="20.10.1"
+KEEXYBOX_NEW_VERSION="20.10.2"
 
 # This function required to converts cidr to IP mask.
 # Example : it converts /24 to 255.255.255.0

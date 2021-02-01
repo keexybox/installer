@@ -2,7 +2,11 @@
 
 All notable changes on installation scripts for KeexyBox is documented below.
 
-## [20.10.1] - 2020-10-7
+## [20.10.2] - 2021-02-01
+### Changed
+ - Allow update from webUI interface as keexybox user
+
+## [20.10.1] - 2020-10-07
 ### Changed
  - disable rfkill
 
