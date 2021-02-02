@@ -281,7 +281,7 @@ create_update_config_file() {
 user_inst=''
 if [ $(id -u) -eq 0 ]; then
     user_inst='root'
-elif [ $USER == 'keexybox' ]; then
+elif [ $(id -un) == 'keexybox' ]; then
     user_inst='keexybox'
 else
 	echo "This script must be run as root or as keexybox!"
