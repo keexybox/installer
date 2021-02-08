@@ -46,7 +46,7 @@ update_database() {
 	password=$3
 	file_prefix=$4
 
-	if [ ${KEEXYBOX_CURRENT_VERSION} != ${KEEXYBOX_NEW_VERSION} -a ${KEEXYBOX_CURRENT_VERSION} != "" -a ${KEEXYBOX_NEW_VERSION} != "" ]; then
+    if [ ${KEEXYBOX_CURRENT_VERSION} != ${KEEXYBOX_NEW_VERSION} -a ${KEEXYBOX_CURRENT_VERSION} != "" -a ${KEEXYBOX_NEW_VERSION} != "" ]; then
         sql_files_list=$(ls -1v ${database}_db_from_*_to_*.sql 2> /dev/null | grep -A 999999999 from_${KEEXYBOX_CURRENT_VERSION} | grep -B 999999999 to_${KEEXYBOX_NEW_VERSION})
 
         for sql_file in ${sql_files_list}; do
@@ -57,7 +57,7 @@ update_database() {
         done
     else
         echo "Nothing to update for database ${database}!"
-	fi
+    fi
 }
 
 echo
