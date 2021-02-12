@@ -19,27 +19,27 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Keexybox.	If not, see <http://www.gnu.org/licenses/>.
+# along with Keexybox.    If not, see <http://www.gnu.org/licenses/>.
 # ***** END LICENSE BLOCK *****
 echo
 echo "---- Installation of Keexybox packages ----"
 echo
 rc=0
 for app in bind dhcpd tor hostapd keexyapp; do
-	#-------- CREATE APP DIRECTORY
-	if [ ! -d "${KEEXYBOX_HOME}/${app}" ]; then
-		mkdir "${KEEXYBOX_HOME}/${app}"
-	fi
+    #-------- CREATE APP DIRECTORY
+    if [ ! -d "${KEEXYBOX_HOME}/${app}" ]; then
+        mkdir "${KEEXYBOX_HOME}/${app}"
+    fi
 
     if [ -f ${KEEXYBOX_PKG_DIR_PATH}/keexybox-${app}.tar.gz ]; then
-	    #-------- DEPLOY APP
-	    echo -n "Installing ${app} for Keexybox... "
-	    tar xzf ${KEEXYBOX_PKG_DIR_PATH}/keexybox-${app}.tar.gz -C ${KEEXYBOX_HOME}/
+        #-------- DEPLOY APP
+        echo -n "Installing ${app} for Keexybox... "
+        tar xzf ${KEEXYBOX_PKG_DIR_PATH}/keexybox-${app}.tar.gz -C ${KEEXYBOX_HOME}/
         if [ $? -ne 0 ]; then
-	        echo "Error while installing ${app}"
+            echo "Error while installing ${app}"
             rc=$(expr $rc + 1)
         else
-	        echo "done"
+            echo "done"
         fi
     else
         echo "No package available to install ${app}"
