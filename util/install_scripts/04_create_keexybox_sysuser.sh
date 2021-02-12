@@ -28,6 +28,7 @@ useradd -m -s /bin/bash -d ${KEEXYBOX_HOME} ${KEEXYBOX_SYSUSER}
 res_usr_create=$?
 #chown -R ${KEEXYBOX_SYSUSER}:${KEEXYBOX_SYSUSER} ${KEEXYBOX_HOME}
 mkdir -p ${KEEXYBOX_HOME}/logs
+mkdir -p ${KEEXYBOX_HOME}/tmp
 
 if [ $res_usr_create -eq 0 ]; then
 	echo "done!"

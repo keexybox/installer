@@ -37,6 +37,7 @@ ln -s ../mods-available/ssl.load >> /dev/null
 cd -
 
 mkdir -p ${KEEXYBOX_HOME}/backupconf
+mkdir -p ${KEEXYBOX_HOME}/tmp
 mkdir -p ${KEEXYBOX_HOME}/keexyapp/logs
 
 #mkdir -p ${KEEXYBOX_HOME}/ssl
