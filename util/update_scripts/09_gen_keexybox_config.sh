@@ -86,6 +86,7 @@ echo "DHCP:"
 echo "  ${KXB_CMD} config dhcp all"
 ${KXB_CMD} config dhcp all >> /dev/null
 touch ${KEEXYBOX_HOME}/dhcpd/etc/dhcpd.leases >> /dev/null
+touch ${KEEXYBOX_HOME}/dhcpd/etc/interfaces.conf >> /dev/null
 
 # Create hostapd configuration : main
 echo "Hostapd:"
