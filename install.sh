@@ -49,6 +49,19 @@ KEEXYBOX_HOME="/opt/keexybox"
 # KeexyBox version beeing installed
 KEEXYBOX_NEW_VERSION="21.04.1"
 
+# Getting hardware architecture
+uname_res=$(uname -m)
+if [[ "$uname_res" == "arm"* ]]
+then
+    HW_ARCH="arm"
+elif [[ "$uname_res" == "x86_64" ]]
+then
+    HW_ARCH="amd64"
+elif [[ "$uname_res" == "i386" ]]
+then
+    HW_ARCH="i386"
+fi
+
 # This function required to converts cidr to IP mask.
 # Example : it converts /24 to 255.255.255.0
 cidr2mask() {
@@ -91,6 +104,7 @@ set_dns_config() {
 		dnsid=$(expr $dnsid + 1)
     done
 }
+
 
 ########################################
 ####### PASSWORD SET ######
@@ -210,6 +224,7 @@ create_install_config_file() {
 	# DNS servers
 	conf_data+=("export KEEXYBOX_DNS1=${dns[1]}")
 	conf_data+=("export KEEXYBOX_DNS2=${dns[2]}")
+	conf_data+=("export HW_ARCH=${HW_ARCH}")
 
 	IFS=""
 	echo "#!/bin/bash" > ${INSTALL_CONF}
@@ -265,6 +280,7 @@ create_update_config_file() {
 	conf_data+=("export KEEXYAPP_CFG=\"${KEEXYBOX_HOME}/keexyapp/config/app.php\"")
 	conf_data+=("export KXB_CMD=\"${KEEXYBOX_HOME}/keexyapp/bin/cake\"")
 	conf_data+=("export KXB_SCRIPTS=\"${KEEXYBOX_HOME}/keexyapp/src/Shell/scripts/\"")
+	conf_data+=("export HW_ARCH=${HW_ARCH}")
 
 	IFS=""
 	echo "#!/bin/bash" > ${UPDATE_CONF}
