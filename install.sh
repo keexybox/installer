@@ -398,6 +398,7 @@ else
     		cli_ask_admin_password
     	fi
     	create_install_config_file
+        exit 1
     	
     	#-------- RUN INSTALLATION
     	./util/run_install.sh ${INSTALL_CONF}

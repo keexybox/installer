@@ -66,6 +66,7 @@ if [ $conn_mdb -eq 0 ]; then
 
 	echo -n "keexybox.config table initialization..."
 	$mysql_cmd ${DATABASE_KEEXYBOX_DATABASE} < ${KEEXYBOX_SQL_DIR_PATH}/${DATABASE_KEEXYBOX_DATABASE}.config.sql
+	$mysql_cmd ${DATABASE_KEEXYBOX_DATABASE} < ${KEEXYBOX_SQL_DIR_PATH}/${DATABASE_KEEXYBOX_DATABASE}.config.${HW_ARCH}.sql
 	if [ "$?" -eq 0 ]; then
 		echo "done!"
 	else
