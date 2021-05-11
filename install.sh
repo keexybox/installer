@@ -47,7 +47,7 @@ UPDATE_CONF="./update.conf"
 KEEXYBOX_HOME="/opt/keexybox"
 
 # KeexyBox version beeing installed
-KEEXYBOX_NEW_VERSION="21.04.1"
+KEEXYBOX_NEW_VERSION="21.04.2"
 
 # Getting hardware architecture
 uname_res=$(uname -m)
