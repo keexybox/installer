@@ -40,7 +40,7 @@ conn_mdb=$?
 
 if [ $conn_mdb -eq 0 ]; then
 	exec_files=$(echo "SELECT value FROM config WHERE type='exec_file';" | ${mysql_cmd} | awk '{if (NR!=1) {print}}')
-	config_files=$(echo "SELECT value FROM config WHERE type='config_file' AND param!='dhcp_conffile' AND param!='dhcp_reservations_conffile';" | ${mysql_cmd} | awk '{if (NR!=1) {print}}')
+	config_files=$(echo "SELECT value FROM config WHERE type='config_file' AND param!='dhcp_conffile' AND param!='dhcp_reservations_conffile' AND param!='wpa_config_file';" | ${mysql_cmd} | awk '{if (NR!=1) {print}}')
 	dir_paths=$(echo "SELECT value FROM config WHERE type='dir_path';" | ${mysql_cmd} | awk '{if (NR!=1) {print}}')
 	tcpip_ports=$(echo "SELECT value FROM config WHERE type='tcpip_port';" | ${mysql_cmd} | awk '{if (NR!=1) {print}}')
 
